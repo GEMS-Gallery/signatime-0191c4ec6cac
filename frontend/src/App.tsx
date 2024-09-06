@@ -35,7 +35,9 @@ function App() {
   const onSubmit = async (data: { name: string; notes: string; link: string }) => {
     setLoading(true);
     try {
-      await backend.addSignatureRequest(data.name, data.notes || null, data.link || null);
+      const notes = data.notes.trim() === '' ? null : data.notes;
+      const link = data.link.trim() === '' ? null : data.link;
+      await backend.addSignatureRequest(data.name, notes, link);
       reset();
       await fetchRequests();
     } catch (error) {
@@ -71,7 +73,7 @@ function App() {
           name="name"
           control={control}
           defaultValue=""
-          rules={{ required: 'Name is required' }}
+          rules={{ required: 'Name is required', validate: (value) => value.trim() !== '' || 'Name cannot be empty' }}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}

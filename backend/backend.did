@@ -1,0 +1,15 @@
+type Time = int;
+type SignatureRequest = 
+ record {
+   createdAt: Time;
+   id: nat;
+   link: opt text;
+   name: text;
+   notes: opt text;
+   signed: bool;
+ };
+service : {
+  addSignatureRequest: (text, opt text, opt text) -> (nat);
+  getSignatureRequests: () -> (vec SignatureRequest) query;
+  markAsSigned: (nat) -> (bool);
+}
